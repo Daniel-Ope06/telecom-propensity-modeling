@@ -50,3 +50,27 @@ wallace.describe()
 # Plot histogram of each numerical attribute
 wallace.hist(bins=50, figsize=(20, 15))
 plt.show()
+
+"""
+OBSERVATIONS FROM HISTOGRAMS:
+
+1. 'age':
+    - Fairly normal distribution (bell curve) centered around 30-40.
+
+2. 'current_balance':
+    - Highly right-skewed.
+    - Most customers have lower balances, but outliers exist.
+    - ACTION: Requires scaling to handle outliers.
+
+3. 'conn_tr':
+    - Shows discrete bars (1, 2, 3, 4, 5) rather than a continuous curve.
+    - This indicates it is categorical (connection type grouping ID).
+    - ACTION: We will not treat it as a continuous number but as categorical.
+
+4. 'days_since_last_contact_previous_campaign':
+    - Huge spike at -1 (representing "Never Contacted").
+    - This dominates the distribution.
+    - ACTION:
+        - Create a new binary column ('never_contacted') to capture this group.
+        - Replace -1 with a value around double the max days.
+"""
