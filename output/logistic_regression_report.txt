@@ -1,0 +1,14 @@
+--- LOGISTIC REGRESSION RESULTS ---
+Best Parameters: {'classifier__C': 0.1, 'classifier__penalty': 'l1'}
+Best CV Score (F1): 0.4925
+Test Set AUC Score: 0.7645
+
+--- Test Set Classification Report ---
+              precision    recall  f1-score   support
+
+          No       0.89      0.77      0.83      8153
+         Yes       0.39      0.61      0.48      1980
+
+    accuracy                           0.74     10133
+   macro avg       0.64      0.69      0.65     10133
+weighted avg       0.79      0.74      0.76     10133
