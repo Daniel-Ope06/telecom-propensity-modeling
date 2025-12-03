@@ -4,9 +4,10 @@ train_logistic_regression.py
 1. Trains a Logistic Regression model with Hyperparameter Tuning.
 2. Optimizes for F1-Score to balance Precision (Cost) and Recall (Opportunity).
 """
+import joblib  # type: ignore
 import pandas as pd
-import matplotlib.pyplot as plt
 from pandas import Series
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression  # type: ignore
 from sklearn.pipeline import Pipeline  # type: ignore
 from sklearn.model_selection import GridSearchCV  # type: ignore
@@ -16,7 +17,7 @@ from sklearn.metrics import (  # type: ignore
 from src.preprocessor import create_preprocessor
 from src.config import (
     TRAIN_DATA_PATH, TEST_DATA_PATH,
-    OUTPUT_DIR, FIGURES_DIR
+    MODELS_DIR, OUTPUT_DIR, FIGURES_DIR
 )
 
 
@@ -63,7 +64,7 @@ def run() -> None:
     )
     grid_search.fit(X_train, y_train)
 
-    # --- GENERATE & SAVE REPORT ---
+    # --- EVALUATE ---
     best_model: Pipeline = grid_search.best_estimator_
     y_pred = best_model.predict(X_test)
 
@@ -71,6 +72,11 @@ def run() -> None:
     y_probs = best_model.predict_proba(X_test)[:, 1]
     auc_score = roc_auc_score(y_test, y_probs)
 
+    # --- SAVE MODEL ---
+    model_path = MODELS_DIR / "logistic_regression.joblib"
+    joblib.dump(best_model, model_path)
+
+    # --- GENERATE & SAVE REPORT ---
     report_lines: list = [
         "--- LOGISTIC REGRESSION RESULTS ---",
         f"Best Parameters: {grid_search.best_params_}",
@@ -104,5 +110,6 @@ def run() -> None:
 
     # --- FINAL USER FEEDBACK ---
     print("\n--- Training Model 1 Complete ---\n")
+    print(f"Model saved to: {model_path}\n")
     print(f"Results saved to: {report_path}\n")
     print(f"Confusion Matrix saved to: {fig_path}\n")
