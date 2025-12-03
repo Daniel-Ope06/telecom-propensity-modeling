@@ -1,0 +1,9 @@
+# Python cache
+__pycache__/
+.pytest_cache/
+
+# flake8
+.flake8
+
+#vscode
+.vscode
