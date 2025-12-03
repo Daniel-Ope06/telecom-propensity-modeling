@@ -91,3 +91,47 @@ OBSERVATIONS FROM HISTOGRAMS:
 # Clean (Fix typos, handle -1, map target)
 wallace_clean = clean_wallace_data(wallace)
 wallace_clean.head()
+
+# %%
+# --- NEW CUSTOMER TO TEST ---
+new_customer_dict = {
+    'ID': [12345678],
+    'town': ['Bristol'],
+    'country': ['UK'],
+    'age': [35],
+    'job': ['technician'],
+    'married': ['single'],
+    'education': ['secondary'],
+    'arrears': ['no'],
+    'current_balance': [50.0],
+    'housing': ['yes'],
+    'has_tv_package': ['no'],
+    'last_contact': ['cellular'],
+    'conn_tr': [2],
+    'last_contact_this_campaign_day': [15],
+    'last_contact_this_campaign_month': ['may'],
+    'this_campaign': [1],
+    'days_since_last_contact_previous_campaign': [2000],  # Manual fix for -1
+    'contacted_during_previous_campaign': [0],
+    'outcome_previous_campaign': ['unknown'],
+    'never_contacted': [1]  # Manual flag addition
+}
+new_customer_df: pd.DataFrame = pd.DataFrame(new_customer_dict)
+new_customer_df.head()
+
+# %%
+# --- MODEL 1: LOGISTIC REGRESSION
+log_reg = joblib.load(MODELS_DIR / "logistic_regression.joblib")
+
+# Probability of saying 'Yes' to new contract
+prediction_prob = log_reg.predict_proba(new_customer_df)[:, 1][0]
+
+# Get the Yes/No
+prediction_label: str = log_reg.predict(new_customer_df)[0]
+
+print(f"Propensity Score: {prediction_prob:.4f}")
+print(f"Prediction: {
+    'Yes to Contract' if prediction_label == 1 else 'No to Contract'
+}")
+
+# %%
