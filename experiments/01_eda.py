@@ -6,6 +6,7 @@ USAGE:
     Highlight the lines to run then "Shift+Enter" to view data and charts.
 """
 # autopep8: off
+import os
 import matplotlib.pyplot as plt
 
 # Needed to import from local modules
@@ -14,12 +15,19 @@ import pathlib
 sys.path.append(str(pathlib.Path(__file__).parent.parent))
 
 from src.data_cleaning import (  # noqa: E402
-    load_wallace_data
+    load_wallace_data,
+    clean_wallace_data
 )
 # autopep8: on
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+WALLACE_PATH = os.path.join(
+    current_dir, "..", "data", "wallacecommunications.csv")
+WALLACE_CLEAN_PATH = os.path.join(
+    current_dir, "..", "data", "wallace_clean.csv")
+
 # Get the data
-wallace = load_wallace_data()
+wallace = load_wallace_data(WALLACE_PATH)
 wallace.head()
 wallace.info()
 
@@ -74,3 +82,10 @@ OBSERVATIONS FROM HISTOGRAMS:
         - Create a new binary column ('never_contacted') to capture this group.
         - Replace -1 with a value around double the max days.
 """
+
+# Clean (Fix typos, handle -1, map target)
+wallace = clean_wallace_data(wallace)
+wallace.head()
+
+# Save to CSV
+wallace.to_csv(WALLACE_CLEAN_PATH, index=False)
