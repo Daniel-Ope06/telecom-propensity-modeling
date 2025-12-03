@@ -6,6 +6,9 @@ USAGE:
     Highlight the lines to run then "Shift+Enter" to view data and charts.
 """
 # autopep8: off
+import matplotlib.pyplot as plt
+
+# Needed to import from local modules
 import sys
 import pathlib
 sys.path.append(str(pathlib.Path(__file__).parent.parent))
@@ -29,10 +32,10 @@ wallace["education"].value_counts()
 wallace["arrears"].value_counts()
 wallace["housing"].value_counts()
 
-# Some have 'n' instead of 'no' in 'has_tv_package'
+# Five records have 'n' instead of 'no' in 'has_tv_package'
 wallace["has_tv_package"].value_counts()
 
-# Some have 'cell' instead of 'cellular' in 'last_contact'
+# Two records have 'cell' instead of 'cellular' in 'last_contact'
 wallace["last_contact"].value_counts()
 
 # One record has 'j' instead of an actual month
@@ -43,3 +46,7 @@ wallace["new_contract_this_campaign"].value_counts()
 
 # Summary of numerical attributes
 wallace.describe()
+
+# Plot histogram of each numerical attribute
+wallace.hist(bins=50, figsize=(20, 15))
+plt.show()
