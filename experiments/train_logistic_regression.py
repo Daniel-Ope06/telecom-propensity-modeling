@@ -36,7 +36,7 @@ def run() -> None:
     X_test: pd.DataFrame = test_df.drop(columns=[target])
     y_test: Series = test_df[target]
 
-    pipeline = Pipeline(steps=[
+    pipeline: Pipeline = Pipeline(steps=[
         ('preprocessor', create_preprocessor()),
         ('classifier', LogisticRegression(
             # liblinear supports both L1 and L2 regularization.
