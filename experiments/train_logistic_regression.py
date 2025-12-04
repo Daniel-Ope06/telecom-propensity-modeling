@@ -39,10 +39,10 @@ def run() -> None:
     pipeline = Pipeline(steps=[
         ('preprocessor', create_preprocessor()),
         ('classifier', LogisticRegression(
-            # because it supports both L1 and L2 regularization.
+            # liblinear supports both L1 and L2 regularization.
             solver='liblinear',
             class_weight='balanced',
-            random_state=42,
+            random_state=0,
             max_iter=1000
         ))
     ])
@@ -54,7 +54,7 @@ def run() -> None:
         'classifier__C': [0.001, 0.01, 0.1, 1, 10, 100],  # values of C to test
         'classifier__penalty': ['l1', 'l2']
     }
-    grid_search = GridSearchCV(
+    grid_search: GridSearchCV = GridSearchCV(
         pipeline,
         param_grid,
         cv=5,
